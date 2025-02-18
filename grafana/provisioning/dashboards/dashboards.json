@@ -1,0 +1,43 @@
+{
+  "dashboard": {
+    "id": null,
+    "uid": "example-dashboard",
+    "title": "Example Dashboard",
+    "tags": [],
+    "timezone": "browser",
+    "panels": [
+      {
+        "type": "graph",
+        "title": "CPU Usage",
+        "targets": [
+          {
+            "target": "avg(rate(node_cpu_seconds_total[5m])) by (instance)"
+          }
+        ],
+        "xaxis": {
+          "mode": "time"
+        },
+        "yaxes": [
+          {
+            "format": "percent",
+            "min": 0,
+            "max": 1
+          },
+          {
+            "format": "short"
+          }
+        ]
+      },
+      {
+        "type": "logs",
+        "title": "Application Logs",
+        "targets": [
+          {
+            "expr": "{app=\"your_app_name\"}"
+          }
+        ]
+      }
+    ]
+  },
+  "overwrite": true
+}

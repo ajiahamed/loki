@@ -1,0 +1,39 @@
+auth_enabled: false
+
+server:
+  http_listen_port: 3100
+  grpc_listen_port: 9096
+
+ingester:
+  chunk_idle_period: 5m
+  chunk_retain_period: 1h
+  max_chunk_age: 1h
+
+storage_config:
+  # Correctly define object_store and set it as 'filesystem'
+  boltdb:
+    directory: /loki/index  # Directory for storing index
+  filesystem:
+    directory: /loki/chunks  # Directory for chunk storage
+
+limits_config:
+  ingestion_rate_mb: 5
+  ingestion_burst_size_mb: 10
+  allow_structured_metadata: false  # Disable structured metadata for now
+
+schema_config:
+  configs:
+    - from: 2020-10-10
+      store: tsdb  # Set store to tsdb
+      schema: v13  # Use schema v13
+      index:
+        prefix: index_
+        period: 24h  # Period set to 24 hours
+      object_store: filesystem  # Correctly reference the filesystem object store
+      tsdb:
+        active_index_directory: /loki/index  # Directory for active index
+        cache_location: /loki/cache  # Cache location for tsdb
+
+compactor:
+  working_directory: /loki/compactor  # Set a valid working directory for the compactor
+

@@ -1,0 +1,36 @@
+---
+services:
+  # Loki Service
+  loki:
+    image: grafana/loki:2.5.0
+    container_name: loki
+    ports:
+      - "3100:3100"  # Loki's port
+    volumes:
+      - ./loki-config.yaml:/etc/loki/config.yaml  # Custom config if needed
+    command: -config.file=/etc/loki/config.yaml
+    restart: unless-stopped
+
+  # Prometheus Service
+  prometheus:
+    image: prom/prometheus:v2.39.0
+    container_name: prometheus
+    ports:
+      - "9090:9090"  # Prometheus's port
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml  # Custom Prometheus config
+    restart: unless-stopped
+
+  # Grafana Service
+  grafana:
+    image: grafana/grafana:9.3.0
+    container_name: grafana
+    ports:
+      - "3000:3000"  # Grafana's port
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: "admin"  # Default admin password
+    depends_on:
+      - loki
+      - prometheus
+    restart: unless-stopped
+
