@@ -11,7 +11,7 @@ services:
     networks:
       - monitoring
     restart: unless-stopped
-
+  
   loki:
     image: grafana/loki:latest
     container_name: loki
